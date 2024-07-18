@@ -17,7 +17,13 @@ public class CreateAuthorReqDto {
     private Role role;
 
 
+    // builder 패턴
     public Author toEntity() {
-        return new Author(this.name, this.email, this.password, this.role);
+        return Author.builder()
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .role(this.role)
+                .build();
     }
 }

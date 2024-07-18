@@ -1,0 +1,56 @@
+<!-- 회원가입
+이름, email, password, 사용자권한(일반유저,관리자),가입완료 버튼
+이름 : input type text
+password : input type password
+사용자권한 : radio
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div th:replace="common/header :: headerFragment"></div>
+    <div class="container">
+      <div class="page-header"><h3>회원 가입</h3></div>
+      <form action="/author/register" method="post" enctype="application/x-www-form-urlencoded">
+        <div class="mx-auto">
+          <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" name="name" id="name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" name="email" id="email" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="role">사용권한</label><br>
+            <select name="role" id="role" class="form-select">
+                <option value="ADMIN">관리자</option>
+                <option value="USER" selected>일반유저</option>
+
+            </select>
+          </div>
+          <div style="float: right">
+            <button type="submit" class="btn btn-secondary">등록</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
