@@ -3,12 +3,14 @@ package com.beyond.board.author.domain;
 import com.beyond.board.author.dto.AuthorResDto;
 import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.domain.Post;
+import com.beyond.board.post.dto.UpdateAuthorReqDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,5 +53,15 @@ public class Author extends BaseTimeEntity {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+
+    public void changeDeletedTime() {
+        this.deletedTime = LocalDateTime.now();
+    }
+
+    public void changeInfo(UpdateAuthorReqDto updateAuthorReqDto) {
+        this.name = updateAuthorReqDto.getName();
+        this.password = updateAuthorReqDto.getPassword();
     }
 }

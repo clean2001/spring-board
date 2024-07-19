@@ -5,6 +5,7 @@ import com.beyond.board.author.dto.AuthorDetailResDto;
 import com.beyond.board.author.dto.AuthorResDto;
 import com.beyond.board.author.dto.CreateAuthorReqDto;
 import com.beyond.board.author.service.AuthorService;
+import com.beyond.board.post.dto.UpdateAuthorReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,6 @@ public class AuthorController {
         return "redirect:/author/list";
     }
 
-
     // 전체 조회
     @GetMapping("/list")
     public String getAuthorList(Model model) {
@@ -51,9 +51,23 @@ public class AuthorController {
             AuthorDetailResDto authorDetail = authorService.getAuthorDetail(authorId);
             model.addAttribute("author", authorDetail);
             return "author/author_detail";
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return null; // 존재하지 않음
         }
+
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteAuthor(@PathVariable Long id, Model model) {
+        authorService.deleteAuthor(id);
+        return "redirect:/author/list";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateAuthor(@PathVariable Long id, UpdateAuthorReqDto updateAuthorReqDto) {
+        authorService.updateAuthor(id, updateAuthorReqDto);
+
+        return "redirect:/author/detail/" + id;
     }
 
 }

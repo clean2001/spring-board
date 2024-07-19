@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,19 +9,22 @@
 <body>
     <div th:replace="common/header :: headerFragment"></div>
     <div class="container ml-auto" style="margin-top: 20px; margin-bottom: 20px;">
+        <a href="/post/create" class="btn btn-primary">글쓰기</a>
         <table class="table" id="table1" >
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Title</th>
-                    <th>Contents</th>
+                    <th>Author Email</th>
+                    <th>상세보기~</th>
                 </tr>
             </thead>
             <tbody id="bodyData">
                 <tr th:each ="post : ${postList}">
                     <td th:text="${post.id}"></td>
                     <td th:text="${post.title}"></td>
-                    <td th:text="${post.contents}"></td>
+                    <td th:text="${post.authorEmail}"></td>
+                    <td><a th:href="@{/post/detail/{id}(id=${post.id})}">상세보기</a></td>
                 </tr>
             </tbody>
         </table>

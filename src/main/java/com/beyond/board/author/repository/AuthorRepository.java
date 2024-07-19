@@ -3,6 +3,8 @@ package com.beyond.board.author.repository;
 import com.beyond.board.author.domain.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
@@ -20,4 +22,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     }
 
     Optional<Author> findByEmail(String email);
+
+    List<Author> findAllByDeletedTime(LocalDateTime time);
 }

@@ -19,14 +19,16 @@ public class PostDetailResDto {
     private String authorName;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+    private String authorEmail;
 
     public static PostDetailResDto fromEntity(Post post) {
         return PostDetailResDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .contents(post.getTitle())
+                .contents(post.getContents())
                 .authorId(post.getAuthor().getId())
                 .authorName(post.getAuthor().getName())
+                .authorEmail(post.getAuthor().getEmail())
                 .createdTime(post.getCreatedTime())
                 .updatedTime(post.getUpdatedTime())
                 .build();

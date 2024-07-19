@@ -2,6 +2,7 @@ package com.beyond.board.post.domain;
 
 import com.beyond.board.author.domain.Author;
 import com.beyond.board.common.BaseTimeEntity;
+import com.beyond.board.post.dto.UpdatePostReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,10 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.contents = contents;
         this.author = author;
+    }
+
+    public void updatePost(UpdatePostReqDto updatePostReqDto) {
+        this.title = updatePostReqDto.getTitle();
+        this.contents = updatePostReqDto.getContents();
     }
 }

@@ -15,4 +15,6 @@ public abstract class BaseTimeEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedTime;
+
+    protected LocalDateTime deletedTime;
 }

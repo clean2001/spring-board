@@ -5,6 +5,7 @@ import com.beyond.board.author.dto.AuthorDetailResDto;
 import com.beyond.board.author.dto.AuthorResDto;
 import com.beyond.board.author.dto.CreateAuthorReqDto;
 import com.beyond.board.author.repository.AuthorRepository;
+import com.beyond.board.post.dto.UpdateAuthorReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     public List<AuthorResDto> getAuthorList() {
-        return authorRepository.findAll().stream()
+        return authorRepository.findAllByDeletedTime(null).stream()
                 .map(Author::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -36,6 +37,9 @@ public class AuthorService {
             throw new IllegalArgumentException("이미 존재하는 이메일");
         }
 
+        // 비밀번호 검증
+        checkPasswordLength(createAuthorReqDto.getPassword());
+
         Author savedAuthor = authorRepository.save(author);
 
         return savedAuthor.fromEntity();
@@ -46,10 +50,35 @@ public class AuthorService {
         return AuthorDetailResDto.fromEntity(author);
     }
 
-    // service 똔느 리보지
+    // service 또는 리포지토리에 의존성
     // service 레이어에 있는 코드가 고도화 되고 복잡할 경우 service를 import
 
     public Author authorFindByEmail(String email) {
         return authorRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 이메일"));
+    }
+
+    // 삭제
+    @Transactional
+    public void deleteAuthor(Long id) {
+        System.out.println("line 58");
+        Author author = authorRepository.findByIdOrThrow(id);
+        authorRepository.delete(author); // 삭제
+        System.out.println("삭제됨??");
+    }
+
+    @Transactional
+    public void updateAuthor(Long id, UpdateAuthorReqDto updateAuthorReqDto) {
+        // 업데이트는 무조건 객체 찾아와야함
+        Author author = authorRepository.findByIdOrThrow(id);
+        // 비밀번호 검증
+        checkPasswordLength(updateAuthorReqDto.getPassword());
+
+        author.changeInfo(updateAuthorReqDto); // 이름, 패스워드 바꾸기 => 아 save 안해줘도 변경 감지가 되나보네?
+    }
+
+    private void checkPasswordLength(String password) {
+        if(password.length() < 8) {
+            throw new IllegalArgumentException("비밀번호는 8자리 이상이어야 합니다.");
+        }
     }
 }
