@@ -3,6 +3,10 @@ package com.beyond.board.post.controller;
 import com.beyond.board.post.dto.*;
 import com.beyond.board.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +33,7 @@ public class PostController {
 
 
     // 전체 조회
-    @GetMapping("/list")
+//    @GetMapping("/list")
     public String getPostList(Model model) {
         List<PostListResDto> postList = postService.getPostList();
         model.addAttribute("postList", postList);
@@ -63,5 +67,24 @@ public class PostController {
         postService.deletePost(postId);
 
         return "redirect:/post/list";
+    }
+
+    // 페이지네이션 연습
+    @GetMapping("/rest/list/page")
+    @ResponseBody
+    // pageable에 default set을 지정 가능. 페이징 처리는 부하를 주지 않기 위해 **필수적**으로 해야한다.
+    // Pageable 요청 방법: localhost:8080/post/list/page?size=10&page=0 => 이런식으로. (데이터
+    public Page<PostListResDto> postListTest(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.postListPage(pageable);
+    }
+
+
+    // 페이지네이션 연습 - mvc version
+    @GetMapping("/list")
+    // pageable에 default set을 지정 가능. 페이징 처리는 부하를 주지 않기 위해 **필수적**으로 해야한다.
+    // Pageable 요청 방법: localhost:8080/post/list/page?size=10&page=0 => 이런식으로. (데이터
+    public String postListMvc(Model model, @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        model.addAttribute("postList", postService.postList(pageable));
+        return "post/post_list";
     }
 }

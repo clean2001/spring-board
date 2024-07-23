@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="https://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div id="chat-page">
+    <div id="chat">
+        <div id="messageArea"></div>
+        <input type="text" id="message" placeholder="Type your message here..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<script>
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/public', function(messageOutput) {
+                showMessageOutput(JSON.parse(messageOutput.body));
+            });
+
+            stompClient.send("/app/chat.addUser",
+                {},
+                JSON.stringify({sender: 'User', type: 'JOIN'})
+            );
+        });
+    }
+
+    function sendMessage() {
+        var messageContent = document.getElementById("message").value;
+        if(messageContent && stompClient) {
+            var chatMessage = {
+                sender: 'User',
+                content: messageContent,
+                type: 'CHAT'
+            };
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+            document.getElementById("message").value = '';
+        }
+    }
+
+    function showMessageOutput(messageOutput) {
+        var messageArea = document.getElementById("messageArea");
+        var messageElement = document.createElement('div');
+        var text = document.createTextNode(messageOutput.sender + ": " + messageOutput.content);
+        messageElement.appendChild(text);
+        messageArea.appendChild(messageElement);
+    }
+
+    connect();
+</script>
+</body>
+</html>

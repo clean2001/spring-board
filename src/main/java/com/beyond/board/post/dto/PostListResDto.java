@@ -25,7 +25,7 @@ public class PostListResDto {
                 .id(post.getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
-                .authorEmail(post.getAuthor().getEmail())
+                .authorEmail(post.getAuthor().getEmail()) // 참조할 때 쿼리가 N+1 이슈 발생
                 .authorName(post.getAuthor().getName())
 //                .author(post.getAuthor()) // FIXME: 삭제 예정
                 .build();

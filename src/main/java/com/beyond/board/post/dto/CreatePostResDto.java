@@ -20,8 +20,10 @@ public class CreatePostResDto {
     private String authorEmail;
     private String authorName;
     private LocalDateTime createdTime;
+    private String appointment; // 예약 여부 Y, N
+    private LocalDateTime appointmentTime;
 
-    public static CreatePostResDto toResponse(Post post, Author author) {
+    public static CreatePostResDto fromEntity(Post post, Author author) {
         return CreatePostResDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -29,7 +31,9 @@ public class CreatePostResDto {
                 .authorId(author.getId())
                 .authorEmail(author.getEmail())
                 .authorName(author.getName())
-                .createdTime(post.getCreatedTime()) // FIXME:
+                .createdTime(post.getCreatedTime())
+                .appointment(post.getAppointment())
+                .appointmentTime(post.getAppointmentTime())
                 .build();
     }
 

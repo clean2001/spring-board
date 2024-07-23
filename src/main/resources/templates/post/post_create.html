@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,6 +32,13 @@
             placeholder="여기에 글을 쓰세요."
             class="form-control"
           ></textarea>
+        </div>
+        <div>
+          <label>예약 여부</label>
+          <input type="radio" name="appointment" value="Y"> YES
+          <input type="radio" name="appointment" value="N" checked>NO
+          <label>예약 시간</label>
+          <input type="datetime-local" name="appointmentTime">
         </div>
         <div>
           <button type="submit" class="btn btn-secondary">제출</button>

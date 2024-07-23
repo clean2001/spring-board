@@ -2,11 +2,11 @@ package com.beyond.board.author.dto;
 
 import com.beyond.board.author.domain.Author;
 import com.beyond.board.author.domain.Role;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
+
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -24,6 +24,7 @@ public class CreateAuthorReqDto {
                 .email(this.email)
                 .password(this.password)
                 .role(this.role)
+                .posts(new ArrayList<>())
                 .build();
     }
 }
